@@ -551,14 +551,16 @@ private extension SquirrelInputController {
       let lastPage = ctx.menu.is_last_page
 
       let selRange = NSRange(location: start.utf16Offset(in: preedit), length: preedit.utf16.distance(from: start, to: end))
-      showPanel(preedit: inlinePreedit ? "" : preedit, selRange: selRange, caretPos: caretPos.utf16Offset(in: preedit),
+      let caretPosInt = caretPos.utf16Offset(in: preedit)
+      showPanel(preedit: inlinePreedit ? "" : preedit, selRange: selRange, caretPos: caretPosInt,
                 candidates: candidates, comments: comments, labels: labels, highlighted: Int(ctx.menu.highlighted_candidate_index),
                 page: page, lastPage: lastPage)
 
       // LLM async suggestion
-      triggerLlmSuggest(preedit: preedit, localCandidates: candidates, localComments: comments, labels: labels,
-                        highlighted: Int(ctx.menu.highlighted_candidate_index), page: page, lastPage: lastPage,
-                        selRange: selRange, caretPos: caretPos.utf16Offset(in: preedit))
+      triggerLlmSuggest(preedit: preedit, localCandidates: candidates, localComments: comments, panelState: PanelState(
+        labels: labels, highlighted: Int(ctx.menu.highlighted_candidate_index), page: page, lastPage: lastPage,
+        selRange: selRange, caretPos: caretPosInt, inlinePreedit: inlinePreedit, preedit: self.preedit
+      ))
 
       _ = rimeAPI.free_context(&ctx)
     } else {
@@ -612,33 +614,36 @@ private extension SquirrelInputController {
     }
   }
 
-  func triggerLlmSuggest(preedit: String, localCandidates: [String], localComments: [String],
-                          labels: [String], highlighted: Int, page: Int, lastPage: Bool,
-                          selRange: NSRange, caretPos: Int) {
+  struct PanelState {
+    var labels: [String]
+    var highlighted: Int
+    var page: Int
+    var lastPage: Bool
+    var selRange: NSRange
+    var caretPos: Int
+    var inlinePreedit: Bool
+    var preedit: String
+  }
+
+  func triggerLlmSuggest(preedit: String, localCandidates: [String], localComments: [String], panelState: PanelState) {
     if llmSuggest == nil {
       let cfg = LlmSuggest.Config.fromSquirrelConfig(NSApp.squirrelAppDelegate.config)
       llmSuggest = LlmSuggest(config: cfg)
     }
 
-    // Reset last LLM results for this keystroke
     lastLlmCandidates = []
     lastLlmComments = []
 
-    let inlinePreedit = self.inlinePreedit
-    let currentPreedit = self.preedit
-
-    llmSuggest?.fetch(preedit: preedit, localCandidates: localCandidates, context: currentPreedit) { [weak self] mergedCandidates, mergedComments in
+    llmSuggest?.fetch(preedit: preedit, localCandidates: localCandidates, context: panelState.preedit) { [weak self] mergedCandidates, mergedComments in
       guard let self = self, let client = self.client else { return }
-      // Only update if the input context hasn't changed since we made the request
-      // (the preedit may have changed if the user typed more keys)
       var inputPos = NSRect()
       client.attributes(forCharacterIndex: 0, lineHeightRectangle: &inputPos)
       if let panel = NSApp.squirrelAppDelegate.panel {
         panel.position = inputPos
         panel.inputController = self
-        panel.update(preedit: inlinePreedit ? "" : preedit, selRange: selRange, caretPos: caretPos,
-                     candidates: mergedCandidates, comments: mergedComments, labels: labels,
-                     highlighted: highlighted, page: page, lastPage: lastPage, update: true)
+        panel.update(preedit: panelState.inlinePreedit ? "" : preedit, selRange: panelState.selRange, caretPos: panelState.caretPos,
+                     candidates: mergedCandidates, comments: mergedComments, labels: panelState.labels,
+                     highlighted: panelState.highlighted, page: panelState.page, lastPage: panelState.lastPage, update: true)
       }
     }
   }
