@@ -77,7 +77,6 @@
 		B35D2FE82BF00839009D156B /* BridgingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35D2FE72BF00839009D156B /* BridgingFunctions.swift */; };
 		B38E9B912BE9AE1E0036ABEF /* SquirrelApplicationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38E9B902BE9AE1E0036ABEF /* SquirrelApplicationDelegate.swift */; };
 		B38E9B952BEAFEFD0036ABEF /* SquirrelInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38E9B942BEAFEFD0036ABEF /* SquirrelInputController.swift */; };
-		7BADB0BEBE6F9B86E7D0D411 /* LlmSuggest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LlmSuggest.swift; path = sources/LlmSuggest.swift; sourceTree = "<group>"; };
 		42C670350A3135CF6B3517A8 /* LlmSuggest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BADB0BEBE6F9B86E7D0D411 /* LlmSuggest.swift */; };
 		B39771232BECEA150093A49B /* MacOSKeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771222BECEA150093A49B /* MacOSKeyCodes.swift */; };
 		B39771252BED899F0093A49B /* SquirrelConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39771242BED899F0093A49B /* SquirrelConfig.swift */; };
@@ -322,7 +321,7 @@
 			children = (
 				B38E9B902BE9AE1E0036ABEF /* SquirrelApplicationDelegate.swift */,
 				B38E9B942BEAFEFD0036ABEF /* SquirrelInputController.swift */,
-		7BADB0BEBE6F9B86E7D0D411 /* LlmSuggest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LlmSuggest.swift; path = sources/LlmSuggest.swift; sourceTree = "<group>"; };
+				7BADB0BEBE6F9B86E7D0D411 /* LlmSuggest.swift */,
 				B39771222BECEA150093A49B /* MacOSKeyCodes.swift */,
 				B397712C2BEEB39D0093A49B /* InputSource.swift */,
 				B397712E2BEECBED0093A49B /* Main.swift */,
@@ -586,7 +585,7 @@
 				B39771232BECEA150093A49B /* MacOSKeyCodes.swift in Sources */,
 				B39771292BEDAF4A0093A49B /* SquirrelView.swift in Sources */,
 				B38E9B952BEAFEFD0036ABEF /* SquirrelInputController.swift in Sources */,
-		42C670350A3135CF6B3517A8 /* LlmSuggest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BADB0BEBE6F9B86E7D0D411 /* LlmSuggest.swift */; };
+				42C670350A3135CF6B3517A8 /* LlmSuggest.swift in Sources */,
 				B39771252BED899F0093A49B /* SquirrelConfig.swift in Sources */,
 				B397712F2BEECBED0093A49B /* Main.swift in Sources */,
 				B397712D2BEEB39D0093A49B /* InputSource.swift in Sources */,

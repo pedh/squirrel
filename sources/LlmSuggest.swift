@@ -108,7 +108,7 @@ final class LlmSuggest {
     request.httpBody = httpBody
     request.timeoutInterval = config.timeout
 
-    let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+    let task = URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
       guard let self = self else { return }
 
       if error != nil {
